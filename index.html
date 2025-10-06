@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator - Cybersecurity Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Secure Password Generator</h1>
+        <p class="subtitle">Generate strong passwords to protect your accounts. Aim for 12+ characters with mixed types!</p>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="length">Password Length:</label>
+                <input type="number" id="length" name="length" min="8" max="50" value="12" required>
+            </div>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" name="lowercase" checked> Lowercase letters (a-z)
+                </label>
+                <label>
+                    <input type="checkbox" name="uppercase" checked> Uppercase letters (A-Z)
+                </label>
+                <label>
+                    <input type="checkbox" name="numbers" checked> Numbers (0-9)
+                </label>
+                <label>
+                    <input type="checkbox" name="symbols"> Symbols (!@#$%^&*)
+                </label>
+            </div>
+
+            <button type="submit">Generate Password</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="error">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% if password %}
+            <div class="result">
+                <h2>Your Generated Password:</h2>
+                <p class="password">{{ password }}</p>
+                <button onclick="copyToClipboard()" class="copy-btn">Copy Password</button>
+            </div>
+        {% endif %}
+
+        <div class="tips">
+            <h3>Cybersecurity Tips:</h3>
+            <ul>
+                <li>Use unique passwords for each account.</li>
+                <li>Enable two-factor authentication (2FA) where possible.</li>
+                <li>Avoid reusing passwords—use a password manager!</li>
+                <li>This tool uses random generation to resist dictionary attacks.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const passwordField = document.querySelector('.password');
+            navigator.clipboard.writeText(passwordField.textContent).then(() => {
+                alert('Password copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
